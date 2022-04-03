@@ -3,7 +3,7 @@ var ctx = canvas.getContext("2d");
 
 // Function to create a randomized array of integers of any given length
 function generateArray(size) {
-    array = []
+    let array = []
     
     // Push integers 1 through size onto array [1, 2, 3, ..., size-1, size]
     for (let i = 0; i < size; i++) {
@@ -45,13 +45,18 @@ function displayArray(array, current) {
         );
         ctx.lineTo(
             (500 / array.length) * i + 10,
-            500 - (500 / array.length) * integerArray[i]
+            500 - (500 / array.length) * array[i]
         );
         ctx.stroke();
     }
 }
 
-function bubbleSort(array) {
+// Sleep function (to delay each action in sorting algorithm)
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function bubbleSort(array) {
     // Iterate through the array
     for (let i = 0; i < array.length; i++) {
         // Move through array from index 0 to last unsorted index
@@ -62,16 +67,15 @@ function bubbleSort(array) {
                 array[j+1] = array[j];
                 array[j] = temp;
             }
+            // Redraw visual and then keep it on screen for 1ms
+            displayArray(array, j);
+            await sleep(1);
         }
     }
-    console.log("success");
-
-    return array;
 }
 
-// Creating default array (size 100)
-generateArray(100);
-integerArray = generateArray(100);
+// Creating default array (size 50)
+integerArray = generateArray(50);
 displayArray(integerArray, -2);
 
 // Creating shuffle button
@@ -91,7 +95,7 @@ sortButton.innerHTML = "Sort";
 sortButton.id = "sortBtn"
 sortButton.className = "button"
 sortButton.addEventListener("click", function() {
-    integerArray = bubbleSort(integerArray);
+    bubbleSort(integerArray);
     displayArray(integerArray)
 });
 document.body.appendChild(sortButton);
