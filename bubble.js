@@ -108,11 +108,26 @@ async function checkSort(array, sleepTime) {
         await sleep (sleepTime);
     }
     displayArray(array);
+    enableInputs();
 }
 
-// Creating default array (size 50)
-integerArray = generateArray(50);
-displayArray(integerArray, -2);
+function enableInputs() {
+    document.getElementById("dataRange").disabled = false;
+    document.getElementById("shuffleBtn").disabled = false;
+    document.getElementById("sortBtn").disabled = false;
+    document.getElementById("sortBtn").className = "button";
+    document.getElementById("shuffleBtn").className = "button";
+    document.getElementById("dataRange").className = "slider";
+}
+
+function disableInputs() {
+    document.getElementById("dataRange").disabled = true;
+    document.getElementById("shuffleBtn").disabled = true;
+    document.getElementById("sortBtn").disabled = true;
+    document.getElementById("sortBtn").className = "button disabled";
+    document.getElementById("shuffleBtn").className = "button disabled";
+    document.getElementById("dataRange").className = "slider disabled";
+}
 
 // Creating shuffle button
 let shuffleButton = document.createElement("button");
@@ -131,6 +146,7 @@ sortButton.innerHTML = "Sort";
 sortButton.id = "sortBtn"
 sortButton.className = "button"
 sortButton.addEventListener("click", function() {
+    disableInputs();
     bubbleSort(integerArray);
 });
 document.body.appendChild(sortButton);
@@ -145,3 +161,7 @@ slider.oninput = function() {
     // Display new array
     displayArray(integerArray);
 }
+
+// Creating default array (size 50)
+integerArray = generateArray(25);
+displayArray(integerArray, -2);
