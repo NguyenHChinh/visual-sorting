@@ -1,5 +1,12 @@
+// Variable used to draw on canvas
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
+
+// Modifiable multiplier for the delay between sorting operations
+// Default: 1
+// Higher = More Delay
+// TODO: Add speed adjuster?
+sleepMultiplier = 1;
 
 // Function to create a randomized array of integers of any given length
 function generateArray(size) {
@@ -47,6 +54,15 @@ function displayArray(array, current) {
             (500 / array.length) * i + 10,
             500 - (500 / array.length) * array[i]
         );
+
+        if (i == current + 1) {
+            ctx.strokeStyle = "red";
+        }
+        else {
+            ctx.strokeStyle = "black";
+        }
+        
+        ctx.lineWidth = 1.4 * (Math.pow(0.982, document.getElementById("dataRange").value - 150)) - 0.5;
         ctx.stroke();
     }
 }
@@ -57,6 +73,10 @@ function sleep(ms) {
 }
 
 async function bubbleSort(array) {
+    // Delay between operations, dependent on how large the array is
+    sleepTime = -0.12 * document.getElementById("dataRange").value + 13
+    sleepTime *= sleepMultiplier
+
     // Iterate through the array
     for (let i = 0; i < array.length; i++) {
         // Move through array from index 0 to last unsorted index
@@ -69,9 +89,25 @@ async function bubbleSort(array) {
             }
             // Redraw visual and then keep it on screen for 1ms
             displayArray(array, j);
-            await sleep(1);
+            await sleep(sleepTime);
         }
     }
+
+    checkSort(array, sleepTime);
+}
+
+async function checkSort(array, sleepTime) {
+    // Iterate through array
+    for (let i = 0; i < array.length; i++) {
+        // If value is greater than next value, then it is not sorted.
+        displayArray(array, i);
+        if (array[i] > array[i+1]) {
+            alert("Error! There was a problem that occured while sorting..");
+            return;
+        }
+        await sleep (sleepTime);
+    }
+    displayArray(array);
 }
 
 // Creating default array (size 50)
@@ -96,6 +132,16 @@ sortButton.id = "sortBtn"
 sortButton.className = "button"
 sortButton.addEventListener("click", function() {
     bubbleSort(integerArray);
-    displayArray(integerArray)
 });
 document.body.appendChild(sortButton);
+
+// Adding functions to slider
+var slider = document.getElementById("dataRange");
+slider.oninput = function() {
+    // Deleting current array
+    integerArray.length = 0;
+    // Creating new array of appropriate size from slider
+    integerArray = generateArray(this.value);
+    // Display new array
+    displayArray(integerArray);
+}
