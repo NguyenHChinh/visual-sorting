@@ -70,5 +70,5 @@ function disableInputs() {
 }
 
 function updateSpeed() {
-    speedchecker.value = (-0.12 * document.getElementById("dataRange").value + 13).toFixed(0);
+    speedchecker.value = (49.4 * Math.pow(0.94, (document.getElementById("dataRange").value - 25)) + 0.6).toFixed(0);
 }
