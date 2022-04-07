@@ -8,34 +8,36 @@ var ctx = canvas.getContext("2d");
 // TODO: Add speed adjuster?
 sleepMultiplier = 1;
 
-async function bubbleSort(array) {
+async function selectionSort(array) {
     // Delay between operations, dependent on how large the array is
     sleepTime = speedchecker.value;
     sleepTime *= sleepMultiplier
 
-    // Iterate through the array
     for (let i = 0; i < array.length; i++) {
-        displayArray(array, -1);
-        await sleep(sleepTime);
-        // Move through array from index 0 to last unsorted index
-        for (let j = 0; j < array.length - (i + 1); j++) {
-            // Comparing current value with next value, if current value is GREATER, swap two values
-            if (array[j] > array[j+1]) {
-                let temp = array[j+1];
-                array[j+1] = array[j];
-                array[j] = temp;
+        let minimumIndex = i;
+        let insideJ = 0;
+        for (let j = i; j < array.length; j++) {
+            if (array[j] < array[minimumIndex]) {
+                minimumIndex = j;
             }
-            // Redraw visual and then keep it on screen for 1ms
-            displayArray(array, j);
+            displayArray(array, j, i);
             await sleep(sleepTime);
+            insideJ = j;
         }
+
+        displayArraySwap(array, i, minimumIndex);
+        await sleep(sleepTime * 5);
+        let temp = array[i];
+        array[i] = array[minimumIndex];
+        array[minimumIndex] = temp;
+        displayArraySwap(array, i, minimumIndex);
+        await sleep(sleepTime * 5);
     }
 
     checkSort(array, sleepTime);
 }
 
-
-function displayArray(array, current) {
+function displayArray(array, current, sortedIndex) {
     // Clearing canvas to draw updated image
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -46,19 +48,58 @@ function displayArray(array, current) {
     for (let i = 0; i < array.length; i++) {
         ctx.beginPath();
         ctx.moveTo(
-            (500 / array.length) * i + 15 - (strokeWidth / 2),
+            (500 / array.length) * i + 15 - (array.length / 10),
             500
         );
         ctx.lineTo(
-            (500 / array.length) * i + 15 - (strokeWidth / 2),
+            (500 / array.length) * i + 15 - (array.length / 10),
             500 - (500 / array.length) * array[i]
         );
 
-        if (i == current + 1) {
+        if (i == current) {
             ctx.strokeStyle = "red";
         }
         else {
+            if (i < sortedIndex) {
+                ctx.strokeStyle = "green";
+            }
+            else {
+                ctx.strokeStyle = "black";
+            }
+        }
+
+        ctx.stroke();
+    }
+}
+
+function displayArraySwap(array, x, y) {
+    // Clearing canvas to draw updated image
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Stroke size
+    strokeWidth = 1.4 * (Math.pow(0.982, document.getElementById("dataRange").value - 150)) - 0.5;
+    ctx.lineWidth = 1.4 * (Math.pow(0.982, document.getElementById("dataRange").value - 150)) - 0.5;
+
+    for (let i = 0; i < array.length; i++) {
+        ctx.beginPath();
+        ctx.moveTo(
+            (500 / array.length) * i + 15 - (array.length / 10),
+            500
+        );
+        ctx.lineTo(
+            (500 / array.length) * i + 15 - (array.length / 10),    
+            500 - (500 / array.length) * array[i]
+        );
+
+        if (i == x || i == y) {
+            ctx.strokeStyle = "blue";
+        }
+        else {
             ctx.strokeStyle = "black";
+        }
+
+        if (i < x) {
+            ctx.strokeStyle = "green";
         }
 
         ctx.stroke();
@@ -83,7 +124,7 @@ sortButton.id = "sortBtn"
 sortButton.className = "button"
 sortButton.addEventListener("click", function() {
     disableInputs();
-    bubbleSort(integerArray);
+    selectionSort(integerArray);
 });
 document.body.appendChild(sortButton);
 

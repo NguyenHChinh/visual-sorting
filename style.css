@@ -11,7 +11,9 @@
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 12px;
-    width: 250px 
+    width: 250px;
+    position: relative;
+    top: 7px;
 }
 .disabled {
     opacity: 0.6;
@@ -61,4 +63,14 @@
 }
 .topnav a.disabled {
     cursor: not-allowed;
+}
+.num {
+    position:relative;
+    height: 10px;
+    width: 50px;
+    left: 90px;
+}
+.speedText {
+    position: relative;
+    left: 90px;
 }
