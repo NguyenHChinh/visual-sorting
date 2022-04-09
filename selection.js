@@ -20,7 +20,7 @@ async function selectionSort(array) {
             if (array[j] < array[minimumIndex]) {
                 minimumIndex = j;
             }
-            displayArray(array, j, i);
+            displayArray(array, j, i, minimumIndex);
             await sleep(sleepTime);
             insideJ = j;
         }
@@ -37,7 +37,7 @@ async function selectionSort(array) {
     checkSort(array, sleepTime);
 }
 
-function displayArray(array, current, sortedIndex) {
+function displayArray(array, current, sortedIndex, minimum) {
     // Clearing canvas to draw updated image
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -56,15 +56,21 @@ function displayArray(array, current, sortedIndex) {
             500 - (500 / array.length) * array[i]
         );
 
+        // Current index being looked at
         if (i == current) {
             ctx.strokeStyle = "red";
         }
+        // Already sorted portion of array
         else {
             if (i < sortedIndex) {
                 ctx.strokeStyle = "green";
             }
             else {
                 ctx.strokeStyle = "black";
+            }
+            // Minimum index colored light blue
+            if (i == minimum) {
+                ctx.strokeStyle = "lightblue";
             }
         }
 
