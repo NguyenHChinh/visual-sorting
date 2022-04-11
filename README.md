@@ -7,6 +7,6 @@ Common sorting algorithms will be created and visualized on a website to help un
 ### Sorting Algorithms
 - Bubble Sort
 - Selection Sort
-- ~~Insertion Sort~~
+- Insertion Sort
 - ~~Quick Sort~~
 - ~~Merge Sort~~
