@@ -4,6 +4,44 @@ var ctx = canvas.getContext("2d");
 
 async function quickSort(array) {
     displayArray(array);
+
+    let leftArray = [];
+    let rightArray = [];
+
+    let pivot = array[0];
+    for (let i = 1; i < array.length; i++) {
+        if (array[i] < pivot) {
+            leftArray.push(array[i]);
+        }
+        else {
+            rightArray.push(array[i]);
+        }
+    }
+
+    array = quickSortHelper(array);
+    displayArray(array);
+}
+
+function quickSortHelper(array) {
+    if (array.length <= 1) {
+        return array;
+    }
+    console.log(array);
+    let pivot = array[0];
+    let leftArray = [];
+    let rightArray = [];
+    let sorted = [];
+
+    for (let i = 1; i < array.length; i++) {
+        if (array[i] < pivot) {
+            leftArray.push(array[i]);
+        }
+        else {
+            rightArray.push(array[i]);
+        }
+    }
+    
+    return quickSortHelper(leftArray).concat(pivot, quickSortHelper(rightArray));
 }
 
 function displayArray(array) {
@@ -29,8 +67,43 @@ function displayArray(array) {
     }
 }
 
+// Creating shuffle button
+let shuffleButton = document.createElement("button");
+shuffleButton.innerHTML = "Shuffle";
+shuffleButton.id = "shuffleBtn"
+shuffleButton.className = "button"
+shuffleButton.addEventListener("click", function() {
+    shuffle(integerArray);
+    displayArray(integerArray);
+});
+document.body.appendChild(shuffleButton);
+
+// Creating sort button
+let sortButton = document.createElement("button");
+sortButton.innerHTML = "Sort";
+sortButton.id = "sortBtn"
+sortButton.className = "button"
+sortButton.addEventListener("click", function() {
+    //disableInputs();
+    quickSort(integerArray);
+});
+document.body.appendChild(sortButton);
+
+// Adding functions to slider
+var slider = document.getElementById("dataRange");
+slider.oninput = function() {
+    // Deleting current array
+    integerArray.length = 0;
+    // Creating new array of appropriate size from slider
+    integerArray = generateArray(this.value);
+    // Display new array
+    displayArray(integerArray);
+    // Updating speed value
+    updateSpeed();
+}
 
 // Creating default array (size 50)
 integerArray = generateArray(25);
 displayArray(integerArray);
+var speedchecker = document.getElementById("speed");
 updateSpeed();
