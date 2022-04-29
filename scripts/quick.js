@@ -3,7 +3,19 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
 async function quickSort(array) {
+    /*
+    Idea on Implementation:
+    Instead of an array of integers, it is an array of objects with an integer
+    value and a constant "index" value. Thus, when recursion happens, perhaps
+    it is possible to pass down the "parts" of the array actively being worked on,
+    and only update those values on the canvas screen? This might be a little
+    harder than I thought..
+    */
     displayArray(array);
+
+    if (array.length <= 1) {
+        return;
+    }
 
     let leftArray = [];
     let rightArray = [];
@@ -18,8 +30,8 @@ async function quickSort(array) {
         }
     }
 
-    array = quickSortHelper(array);
-    displayArray(array);
+    await sleep(1000);
+    array = quickSort(leftArray).concat(pivot, quickSort(rightArray));  
 }
 
 function quickSortHelper(array) {
@@ -40,7 +52,7 @@ function quickSortHelper(array) {
             rightArray.push(array[i]);
         }
     }
-    
+
     return quickSortHelper(leftArray).concat(pivot, quickSortHelper(rightArray));
 }
 

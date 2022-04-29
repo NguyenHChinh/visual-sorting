@@ -46,11 +46,11 @@ function displayArray(array, current) {
     for (let i = 0; i < array.length; i++) {
         ctx.beginPath();
         ctx.moveTo(
-            (500 / array.length) * i + 15 - (strokeWidth / 2),
+            ((500 / array.length) * i + 15) - (array.length / 10),
             500
         );
         ctx.lineTo(
-            (500 / array.length) * i + 15 - (strokeWidth / 2),
+            ((500 / array.length)) * i + 15 - (array.length / 10),
             500 - (500 / array.length) * array[i]
         );
 

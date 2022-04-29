@@ -8,5 +8,10 @@ Common sorting algorithms will be created and visualized on a website to help un
 - Bubble Sort
 - Selection Sort
 - Insertion Sort
-- ~~Quick Sort~~
-- ~~Merge Sort~~
+- More to come!
+
+### TO-DO
+- Implement more sorts
+- Clean up UI
+- Construct a better way to display array visually
+- Implement step-by-step processes with explanations

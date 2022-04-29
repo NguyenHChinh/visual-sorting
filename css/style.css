@@ -74,3 +74,8 @@
     position: relative;
     left: 90px;
 }
+
+canvas {
+    display: block;
+    width: 525px;
+}
